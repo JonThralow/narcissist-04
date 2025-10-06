@@ -1,10 +1,7 @@
-
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/healthz", "destination": "/api/index.ts" },
-    { "source": "/share/:path*", "destination": "/api/index.ts" },
-    { "source": "/og/:path*", "destination": "/api/index.ts" }
+  "routes": [
+    { "src": "^/healthz$", "dest": "/api/index.ts" },
+    { "src": "^/share(?:/.*)?$", "dest": "/api/index.ts" },
+    { "src": "^/og(?:/.*)?$", "dest": "/api/index.ts" }
   ]
 }

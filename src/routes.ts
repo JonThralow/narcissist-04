@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'node:crypto';
-import { createCanvas, registerFont } from 'canvas';
+import { createCanvas, registerFont } from '@napi-rs/canvas';
 import { put, get, head, del } from './share.js';
 
 // Optional font registration (will fallback if not present)
