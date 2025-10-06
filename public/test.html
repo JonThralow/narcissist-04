@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Narcissism Test — Quick / Advanced / Precise</title>
+  <meta name="description" content="Privacy-safe narcissism self-assessment with Blob-backed share links." />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial; margin: 0; background: #0b1020; color: #e8ecf1; }
+    header { padding: 20px 16px; background: linear-gradient(180deg, #0f1530, #0b1020); border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; }
+    main { max-width: 980px; margin: 0 auto; padding: 20px 16px 80px; }
+    a { color: #7cc4ff; }
+    .muted { color: #9bb3c9; }
+    .card { background: #121831; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px; margin: 12px 0; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    select, button { background: #0f1530; border: 1px solid rgba(255,255,255,0.15); color: #e8ecf1; border-radius: 10px; padding: 10px 12px; }
+    button { cursor: pointer; }
+    .q { background: #0f1530; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px; margin-bottom: 8px; }
+    .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 8px; }
+    .scale label { display: block; text-align: center; font-size: 12px; color: #9bb3c9; }
+    .row { display: grid; grid-template-columns: 1fr 220px; gap: 8px; align-items: center; }
+    .footer { color: #9bb3c9; margin-top: 16px; }
+    .bar { height: 8px; background: rgba(255,255,255,0.15); border-radius: 999px; overflow: hidden; }
+    .bar > div { height: 100%; background: #7cc4ff; width: 0%; }
+    .result { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 12px; }
+    .error { color: #ffb4b4; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🪞 Narcissism Test</h1>
+    <p class="muted">Educational use only — <strong>not</strong> a clinical tool. No PII is collected or stored.</p>
+  </header>
+  <main>
+    <section class="card">
+      <div class="grid">
+        <div>
+          <label for="variant">Variant</label><br/>
+          <select id="variant">
+            <option value="quick">Quick (10)</option>
+            <option value="advanced">Advanced (20)</option>
+            <option value="precise">Precise (40)</option>
+          </select>
+        </div>
+        <div>
+          <button id="startBtn">Start</button>
+          <button id="resetBtn" style="margin-left:8px;">Reset</button>
+        </div>
+        <div class="muted">Scale: 1 (Strongly Disagree) … 5 (Strongly Agree)</div>
+      </div>
+    </section>
+
+    <section id="questions" class="card" style="display:none;">
+      <h2>Questions</h2>
+      <div id="qList"></div>
+    </section>
+
+    <section id="results" class="card" style="display:none;">
+      <h2>Results</h2>
+      <div class="result">
+        <div><strong>Total Narcissism Index (TNI)</strong><div class="bar"><div id="barTNI"></div></div><div id="tni"></div></div>
+        <div><strong>Admiration (ADM)</strong><div class="bar"><div id="barADM"></div></div><div id="adm"></div></div>
+        <div><strong>Rivalry (RIV)</strong><div class="bar"><div id="barRIV"></div></div><div id="riv"></div></div>
+        <div><strong>Vulnerability (VUL)</strong><div class="bar"><div id="barVUL"></div></div><div id="vul"></div></div>
+      </div>
+      <div class="footer muted" id="bandNote"></div>
+      <div style="margin-top:12px;">
+        <button id="shareBtn">Create share link</button>
+        <span id="shareOut" class="muted"></span>
+      </div>
+      <div id="err" class="error"></div>
+    </section>
+
+    <p class="footer">Want to see a demo without answering? Use the home page button “Create sample share”.</p>
+    <p><a href="/">← Back to docs</a></p>
+  </main>
+
+  <script src="/static/test-client.js" defer></script>
+</body>
+</html>
