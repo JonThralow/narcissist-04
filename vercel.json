@@ -1,0 +1,12 @@
+{
+  "functions": {
+    "api/**.ts": {
+      "runtime": "nodejs22.x"
+    }
+  },
+  "routes": [
+    { "src": "^/healthz$", "dest": "/api/index.ts" },
+    { "src": "^/share(?:/.*)?$", "dest": "/api/index.ts" },
+    { "src": "^/og(?:/.*)?$", "dest": "/api/index.ts" }
+  ]
+}

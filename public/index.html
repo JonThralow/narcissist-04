@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Narcissism App • Vercel Blob Shares</title>
+  <meta name="description" content="Privacy-safe narcissism test shares with Vercel Blob." />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'; margin: 0; padding: 0; background: #0b1020; color: #e8ecf1; }
+    header { padding: 24px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); background: linear-gradient(180deg, #0f1530, #0b1020); position: sticky; top: 0; }
+    main { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+    code, pre { background: #121831; color: #cbe1ff; padding: 2px 6px; border-radius: 6px; }
+    .card { background: #121831; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin: 12px 0; box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+    input, button, textarea { border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: #0f1530; color: #e8ecf1; padding: 10px 12px; }
+    button { cursor: pointer; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    a { color: #7cc4ff; }
+    .muted { color: #9bb3c9; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🪞 Narcissism App (Vercel Blob Shares)</h1>
+    <p class="muted">Educational use only—<strong>not</strong> a clinical tool. No PII is stored in public shares.</p>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Docs</h2>
+      <p>
+        This minimal app exposes serverless endpoints to create read‑only <em>share links</em> for narcissism test scores.
+        Shares are stored as JSON in <strong>Vercel Blob</strong> and rendered as a small SSR page with rich preview images.
+      </p>
+      <ul>
+        <li><code>POST /share</code> → <em>{ shareId, url }</em></li>
+        <li><code>GET /share/:id</code> → SSR HTML + Open Graph meta</li>
+        <li><code>GET /og/:id.png</code> → Dynamic 1200×630 image</li>
+        <li><code>DELETE /share/:id</code> → Revoke (delete) a share</li>
+        <li><code>GET /healthz</code> → Health check</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Quick demo (client-side)</h2>
+      <p>Creates a sample share with fake scores (no PII), then opens the SSR page.</p>
+      <div class="grid">
+        <div>
+          <button id="createBtn">Create sample share</button>
+        </div>
+        <div>
+          <label for="shareId">Share ID</label>
+          <input id="shareId" placeholder="(will appear here)" />
+        </div>
+        <div>
+          <button id="openBtn">Open share page</button>
+        </div>
+      </div>
+      <p id="result" class="muted"></p>
+    </section>
+
+    <section class="card">
+      <h3>Sample payload schema</h3>
+      <pre><code>{
+  "_v": 1,
+  "createdAt": ISO,
+  "expiresAt": ISO (+30d),
+  "testId": "narcissism.v1",
+  "variant": "quick|advanced|precise",
+  "count": 10|20|40,
+  "labels": { "ADM":"Admiration","RIV":"Rivalry","VUL":"Vulnerability" },
+  "scores": { "ADM": num, "RIV": num, "VUL": num, "TNI": num },
+  "bands":  { "ADM": str, "RIV": str, "VUL": str, "TNI": str }
+}</code></pre>
+      <p class="muted">Note: Do not include any user identifiers or demographics in public payloads.</p>
+    </section>
+  </main>
+
+  <script>
+    async function createSample() {
+      const now = new Date();
+      const payload = {
+        _v: 1,
+        createdAt: now.toISOString(),
+        expiresAt: new Date(now.getTime() + 30*24*3600*1000).toISOString(),
+        testId: "narcissism.v1",
+        variant: "quick",
+        count: 10,
+        labels: { ADM: "Admiration", RIV: "Rivalry", VUL: "Vulnerability" },
+        scores: { ADM: 3.4, RIV: 2.9, VUL: 2.6, TNI: 3.0 },
+        bands: { ADM: "Elevated", RIV: "Typical", VUL: "Typical", TNI: "Typical" }
+      };
+      const res = await fetch('/share', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ payload }) });
+      const data = await res.json();
+      document.getElementById('shareId').value = data.shareId || '';
+      document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+      return data;
+    }
+
+    document.getElementById('createBtn').addEventListener('click', createSample);
+    document.getElementById('openBtn').addEventListener('click', () => {
+      const id = document.getElementById('shareId').value.trim();
+      if (id) window.location.href = '/share/' + id;
+    });
+  </script>
+</body>
+</html>
